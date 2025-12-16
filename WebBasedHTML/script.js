@@ -1,5 +1,6 @@
+// Copy Paste From ChatGPT :>
 // 1. Define Multi-Dimensional Array studentData
-// Format: [Name (String), Credit Hour (Number), Current GPA (Number)]
+// Format: [Name, Credit Hour, Current GPA]
 
 let studentData = [
     ["Ali Ahmad", 18, 3.75],
@@ -8,9 +9,7 @@ let studentData = [
     ["Siti Aminah", 12, 2.95]
 ];
 
-// 2. Create function to measure dean list eligibility
-// Criteria: GPA >= 3.50 AND Credit Hours >= 12
-
+// 2. Function to check Dean's List eligibility
 function checkEligibility(creditHours, gpa) {
     if (gpa >= 3.50 && creditHours >= 12) {
         return "<span class='eligible'>Eligible for Dean's List</span>";
@@ -19,26 +18,46 @@ function checkEligibility(creditHours, gpa) {
     }
 }
 
-// Get output div
+// Output initial data
 let outputDiv = document.getElementById("output");
 
-// 3. Create Looping (for loop) to print student data and eligibility
-for (let i = 0; i < studentData.length; i++) {
+function displayStudent(name, credit, gpa) {
+    let status = checkEligibility(credit, gpa);
 
-    let name = studentData[i][0];
-    let creditHours = studentData[i][1];
-    let gpa = studentData[i][2];
-
-    let status = checkEligibility(creditHours, gpa);
-
-    // 4. Print all output (inside loop)
     outputDiv.innerHTML += `
         <div>
             <b>Name:</b> ${name}<br>
-            <b>Credit Hours:</b> ${creditHours}<br>
+            <b>Credit Hours:</b> ${credit}<br>
             <b>Current GPA:</b> ${gpa}<br>
             <b>Status:</b> ${status}
             <hr style="border-top: 1px dotted #ccc;">
         </div>
     `;
 }
+
+// 3. Loop to display existing students
+for (let i = 0; i < studentData.length; i++) {
+    displayStudent(
+        studentData[i][0],
+        studentData[i][1],
+        studentData[i][2]
+    );
+}
+
+// 4. Form handling
+document.getElementById("studentForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let credit = parseInt(document.getElementById("credit").value);
+    let gpa = parseFloat(document.getElementById("gpa").value);
+
+    // Add to array (optional, but academic-friendly)
+    studentData.push([name, credit, gpa]);
+
+    // Display new student
+    displayStudent(name, credit, gpa);
+
+    // Reset form
+    this.reset();
+});
